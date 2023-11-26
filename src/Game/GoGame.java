@@ -10,6 +10,7 @@ public class GoGame {
         joueurs = new IPlayer[2];
         points = new int[2];
         System.out.println(goban.showboard());
+        goban.boardSize(24);
     }
     public GoGame(){
         this(19);

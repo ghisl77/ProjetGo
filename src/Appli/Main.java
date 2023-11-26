@@ -4,6 +4,7 @@ import Game.*;
 
 public class Main {
     public static void main(String[] args) {
+		GoGame go = new GoGame();
         
     	boolean game_is_running = true;
     	
