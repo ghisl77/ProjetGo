@@ -5,9 +5,9 @@ import Game.*;
 public class ConsolePlayer implements IPlayer {
 
 	@Override
-	public void getCommand() {
+	public String getCommand() {
 		// TODO Auto-generated method stub
-		
+		return "";
 	}
 
 }

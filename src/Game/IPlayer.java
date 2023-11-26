@@ -2,6 +2,6 @@ package Game;
 
 public interface IPlayer {
 
-    public void getCommand();
+    public String getCommand();
     
 }
