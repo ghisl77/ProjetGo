@@ -11,6 +11,7 @@ public class GoGame {
         points = new int[2];
         System.out.println(goban.showboard());
         goban.boardSize(24);
+        System.out.println(goban.showboard());
     }
     public GoGame(){
         this(19);

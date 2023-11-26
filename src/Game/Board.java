@@ -9,14 +9,40 @@ public class Board {
     
     public Board(int nb){
         nbCase=nb;
-        tableau = new char[nb][nb];
-        for (int i = 0; i < nb; i++) {
-            for (int j = 0; j < nb; j++) {
+        initTab();
+    }
+    private void initTab(){
+        tableau = new char[nbCase][nbCase];
+        for (int i = 0; i < nbCase; i++) {
+            for (int j = 0; j < nbCase; j++) {
                 tableau[i][j] = '.';
             }
         }
+        handicap();
     }
-    
+    private void handicap(){
+        if(nbCase>6){
+            int ecart;
+            if(nbCase>13){
+                ecart = 3;
+            }
+            else{
+                ecart = 2;
+            }
+            tableau[ecart][ecart]='+';
+            tableau[nbCase-ecart-1][nbCase-ecart-1]='+';
+            tableau[nbCase-ecart-1][ecart]='+';
+            tableau[ecart][nbCase-ecart-1]='+';
+            if(nbCase%2!=0 && nbCase!=7){
+                tableau[nbCase/2][nbCase/2]='+';
+                tableau[nbCase/2][ecart]='+';
+                tableau[nbCase/2][nbCase-ecart-1]='+';
+                tableau[nbCase-ecart-1][nbCase/2]='+';
+                tableau[ecart][nbCase/2]='+';
+            }
+
+        }
+    }
     public String showboard(){
         StringBuilder s = new StringBuilder();
         s.append("   ");
@@ -52,7 +78,11 @@ public class Board {
         /*if(Arrays.asList(tableau).contains('.')){
             System.out.println("Boardsize cannot be changed after record is started!");
         }*/
-        tableau = new char[taille][taille];
+        else{
+            nbCase=taille;
+            initTab();
+        }
+
     }
     
 }
