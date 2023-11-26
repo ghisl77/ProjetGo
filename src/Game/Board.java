@@ -19,20 +19,26 @@ public class Board {
     
     public String showboard(){
         StringBuilder s = new StringBuilder();
-        s.append("  ");
+        s.append("   ");
         for (int i = 0; i < nbCase; i++) {
-            if(i!=0){s.append(i + " ");}
-            for (int j = 0; j < nbCase; j++) {
-                if(i==0){
-                    s.append(alphabet[j]+ " ");
-                }
-                else
-                    s.append(tableau[i][j]);
+            s.append(alphabet[i]+ " ");
+        }
+        s.append("\n");
+        for (int i = 0; i < nbCase; i++) {
+            if(i>nbCase-10){
+                s.append(" ");
             }
-            if(i!=0){s.append(i + " ");}
+            s.append(nbCase-i + " ");
+            for (int j = 0; j < nbCase; j++) {
+                s.append(tableau[i][j]+" ");
+            }
+            if(i>nbCase-10){
+                s.append(" ");
+            }
+            s.append(nbCase-i + " ");
             s.append("\n");
         }
-        s.append("  ");
+        s.append("   ");
         for (int i = 0; i < nbCase; i++) {
             s.append(alphabet[i]+ " ");
         }
