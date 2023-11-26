@@ -2,10 +2,12 @@ package Game;
 
 public class Board {
     private int nbCase ;
-    final char[] alphabet = {'A','B','C','D','E','F','G','H','J','K','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+    final static char[] alphabet = {'A','B','C','D','E','F','G','H','J','K','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+    
     public Board(int nb){
         nb=nbCase;
     }
+    
     public String showboard(){
         StringBuilder s = new StringBuilder();
         s.append("  ");
@@ -27,4 +29,5 @@ public class Board {
         }
         return s.toString();
     }
+    
 }

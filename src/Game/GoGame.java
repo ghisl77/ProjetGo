@@ -2,9 +2,12 @@ package Game;
 
 public class GoGame {
     private Board goban;
-    private Player[] joueurs;
+    private IPlayer[] joueurs;
+    
     public GoGame(int nbCase){
         goban = new Board(nbCase);
-        joueurs = new Player[2];
+        joueurs = new IPlayer[2];
     }
+    
+    
 }
