@@ -1,53 +1,84 @@
 package Appli;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import Game.*;
 
 public class Main {
     public static void main(String[] args) {
-        
-    	final String[] list_commands = 
-    		{"protocol_version","version","known_command","list_commands",
-    				"quit","boardsize","clear_board","komi","play","genmove"};
+    
+    	
+    	final ArrayList<String> list_commands = 
+    			new ArrayList<String>(Arrays.asList("protocol_version","version",
+    					"known_command","list_commands","quit","boardsize","clear_board",
+    					"komi","play","genmove"));
     	
     	boolean game_is_running = true;
     	
     	GoGame partie = new GoGame(19);
+    	IPlayer currentPlayer = partie.GetPlayer(0);
     	int player_i = 0;
     	
-    	while(game_is_running) {
+		String[] arguments;
+		String command;
+		
+    	do {
     		
-    		IPlayer currentPlayer = partie.GetPlayer(player_i++%2);
+    		arguments = currentPlayer.getCommand().split(" ");
+    		command = arguments[0];
+    		StringBuilder response = new StringBuilder();
+    		boolean successful_response = true;
+    		String error_message = "";
     		
-    		String[] arguments = currentPlayer.getCommand().split(" ");
-    		String command = arguments[0];
+    		boolean has_id = false;
+    		int command_id = 0;
     		
+    		if (arguments.length > 0) {
+    			if (IsUnsignedInteger(arguments[0])) {
+    				has_id = true;
+    				command_id = Integer.parseInt(arguments[0]);
+    			}
+    			
+    		} else {
+    			continue;
+    		}
+    		
+    		System.out.println(partie.getBoard().showboard());
     		
     		if(command.equals("protocol_version")) {
 
-    			System.out.println("GPT protocol version number 2");
+    			response.append("GTP protocol version number 2");
     			
     		}else if (command.equals("version")) {
     			
-    			System.out.println("");
+    			response.append("");
     			
     		}else if (command.equals("known_command")) {
-    			for (String comm:list_commands) {
-    				if (comm.equals(arguments[1])) {
-    					System.out.println("true");
-    					break;
-    				}
-    				
+    			if(list_commands.contains(arguments[1])) {
+    				response.append("");
+    			} else {
+    				response.append("false");
     			}
+			
     		}else if (command.equals("list_commands")) {
-    			// TODO
+    			for(String comm:list_commands) {
+    				response.append(comm);
+    			}
+    			
     		}else if (command.equals("quit")) {
     			
-    			return;
+    			game_is_running = false;
     			
     		}else if (command.equals("boardsize")) {
-    			// TODO
+    			
+    			try {
+    				partie.boardSize(Integer.parseInt(arguments[1]));
+    			} catch(Exception e) {
+    				successful_response = false;
+    				error_message = "unacceptable size";
+    			}
+    			
     		}else if (command.equals("clear_board")) {
     			// TODO
     		}else if (command.equals("komi")) {
@@ -70,10 +101,28 @@ public class Main {
 			play
 			genmove
     		 * */
+
+    		System.out.print( 
+    				(successful_response?"=":"?") + 
+    				(has_id?command_id:"") + 
+    				(successful_response ? (new String(response)) :error_message) );
+    		System.out.print( new String(response) + "\n\n");
     		
-    		
-    		
-    	}
+    	} while(game_is_running);
     	
     }
+    
+    public static boolean IsUnsignedInteger(String s) {
+    	
+    	for (int i = 0; i < s.length();i++) {
+    		
+    		if (!Character.isDigit(s.charAt(i))) {
+    			return false;
+    			
+    		}
+    		
+    	}
+    	return true;
+    }
+    
 }
