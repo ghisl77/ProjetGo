@@ -106,7 +106,9 @@ public class Main {
     				(successful_response?"=":"?") + 
     				(has_id?command_id:"") + 
     				(successful_response ? (new String(response)) :error_message) );
-    		System.out.print( new String(response) + "\n\n");
+    		
+    		
+    		System.out.print("\n\n");
     		
     	} while(game_is_running);
     	
