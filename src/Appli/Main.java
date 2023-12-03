@@ -17,34 +17,33 @@ public class Main {
     	boolean game_is_running = true;
     	
     	GoGame partie = new GoGame(19);
-    	IPlayer currentPlayer = partie.GetPlayer(0);
-    	int player_i = 0;
     	
-		String[] arguments;
+		ArrayList<String> arguments;
 		String command;
+
+		System.out.println(partie.showboard());
 		
     	do {
-    		
-    		arguments = currentPlayer.getCommand().split(" ");
-    		command = arguments[0];
-    		StringBuilder response = new StringBuilder();
-    		boolean successful_response = true;
-    		String error_message = "";
+
+    		arguments = new ArrayList<String>(Arrays.asList(partie.currentPlayer().getCommand().split(" ")));
     		
     		boolean has_id = false;
     		int command_id = 0;
     		
-    		if (arguments.length > 0) {
-    			if (IsUnsignedInteger(arguments[0])) {
+    		if (arguments.size() > 0) {
+    			if (IsUnsignedInteger(arguments.get(0))) {
     				has_id = true;
-    				command_id = Integer.parseInt(arguments[0]);
+    				command_id = Integer.parseInt(arguments.remove(0));
     			}
     			
     		} else {
     			continue;
     		}
     		
-    		System.out.println(partie.getBoard().showboard());
+    		command = arguments.get(0);
+    		StringBuilder response = new StringBuilder();
+    		boolean successful_response = true;
+    		String error_message = "";
     		
     		if(command.equals("protocol_version")) {
 
@@ -55,7 +54,7 @@ public class Main {
     			response.append("");
     			
     		}else if (command.equals("known_command")) {
-    			if(list_commands.contains(arguments[1])) {
+    			if(list_commands.contains(arguments.get(1))) {
     				response.append("");
     			} else {
     				response.append("false");
@@ -73,10 +72,11 @@ public class Main {
     		}else if (command.equals("boardsize")) {
     			
     			try {
-    				partie.boardSize(Integer.parseInt(arguments[1]));
+    				partie.boardSize(Integer.parseInt(arguments.get(1)));
     			} catch(Exception e) {
     				successful_response = false;
     				error_message = "unacceptable size";
+    				continue;
     			}
     			
     		}else if (command.equals("clear_board")) {
@@ -84,6 +84,16 @@ public class Main {
     		}else if (command.equals("komi")) {
     			// TODO
     		}else if (command.equals("play")) {
+    			
+    			try {
+        			Intersection inter = new Intersection(arguments.get(1));
+    				partie.play(inter);
+    			} catch(Exception e) {
+
+    				successful_response = false;
+    				error_message = "illegal move";
+    				
+    			}
     			// TODO
     		}else if (command.equals("genmove")) {
     			// TODO
@@ -101,6 +111,8 @@ public class Main {
 			play
 			genmove
     		 * */
+    	
+    		System.out.println(partie.showboard());
 
     		System.out.print( 
     				(successful_response?"=":"?") + 
