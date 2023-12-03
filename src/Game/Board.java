@@ -75,8 +75,8 @@ public class Board {
         return s.toString();
     }
     
-    public void setStone(int col,int row, byte player) {
-    	tableau[col][row] = player==0?'X':'O';
+    public void setStone(Intersection inter, byte player) {
+    	tableau[inter.getX()][inter.getY()] = player==0?'X':'O';
     }
     
     
