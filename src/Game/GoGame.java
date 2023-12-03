@@ -1,5 +1,7 @@
 package Game;
 
+import player.ConsolePlayer;
+
 public class GoGame {
 	
     private Board goban;
@@ -10,10 +12,10 @@ public class GoGame {
     	
         goban = new Board(nbCase);
         joueurs = new IPlayer[2];
+        joueurs[0] = new ConsolePlayer();
+        joueurs[1] = new ConsolePlayer();
+        
         points = new int[2];
-        System.out.println(goban.showboard());
-        goban.boardSize(24);
-        System.out.println(goban.showboard());
     }
     
     public GoGame(){
@@ -24,5 +26,16 @@ public class GoGame {
     	return joueurs[p];
     }
     
+    public Board getBoard() {
+    	
+    	return goban;
+    }
+    
+    public void boardSize(int taille) {
+    	if(taille < 2 || taille > 25){
+            throw new IllegalArgumentException("unacceptable size");
+        }
+    	goban = new Board(taille);
+    }
     
 }
