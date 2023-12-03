@@ -6,6 +6,8 @@ public class GoGame {
 	
     private Board goban;
     private IPlayer[] joueurs;
+    private IPlayer current_player;
+    private char current_player_char;
 
     private int[] points;
     public GoGame(int nbCase){
@@ -14,6 +16,8 @@ public class GoGame {
         joueurs = new IPlayer[2];
         joueurs[0] = new ConsolePlayer();
         joueurs[1] = new ConsolePlayer();
+        current_player_char = 'b';
+        current_player = GetPlayer(current_player_char);
         
         points = new int[2];
     }
@@ -22,13 +26,13 @@ public class GoGame {
         this(19);
     }
     
-    public IPlayer GetPlayer(int p) {
-    	return joueurs[p];
+    public String showboard() {
+    	return goban.showboard();
     }
     
-    public Board getBoard() {
-    	
-    	return goban;
+    public void play(Intersection inter) {
+    	goban.setStone(inter,current_player_char);
+    	switchCurrentPlayer();
     }
     
     public void boardSize(int taille) {
@@ -38,8 +42,17 @@ public class GoGame {
     	goban = new Board(taille);
     }
 
-    public void clearBoard(int taille){
-        boardSize(taille);
+    private IPlayer GetPlayer(char c) {
+    	return joueurs[c=='b'?0:1];
+    }
+    
+    public IPlayer currentPlayer() {
+    	return GetPlayer(current_player_char);
+    }
+    
+    public void switchCurrentPlayer() {
+    	current_player_char = current_player_char=='w'?'b':'w';
+    	current_player = GetPlayer(current_player_char);
     }
     
 }
