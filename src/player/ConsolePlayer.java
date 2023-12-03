@@ -1,13 +1,19 @@
 package player;
 
+import java.util.Scanner;
+
 import Game.*;
 
 public class ConsolePlayer implements IPlayer {
 
-	@Override
+	private Scanner input;
+	
+	public ConsolePlayer() {
+		input = new Scanner(System.in);
+	}
+	
 	public String getCommand() {
-		// TODO Auto-generated method stub
-		return "";
+		return input.nextLine();
 	}
 
 }
