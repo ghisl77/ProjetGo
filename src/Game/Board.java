@@ -3,23 +3,24 @@ package Game;
 //import java.util.Arrays;
 
 public class Board {
-    private int nbCase;
+    private final int nbCase;
     final static char[] alphabet = {'A','B','C','D','E','F','G','H','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
     private char[][] tableau;
     
     public Board(int nb){
+    	
         nbCase=nb;
-        initTab();
-    }
-    private void initTab(){
         tableau = new char[nbCase][nbCase];
         for (int i = 0; i < nbCase; i++) {
             for (int j = 0; j < nbCase; j++) {
                 tableau[i][j] = '.';
             }
         }
+        
         handicap();
+        
     }
+    
     private void handicap(){
         if(nbCase>6){
             int ecart;
@@ -40,9 +41,9 @@ public class Board {
                 tableau[nbCase-ecart-1][nbCase/2]='+';
                 tableau[ecart][nbCase/2]='+';
             }
-
         }
     }
+    
     public String showboard(){
         StringBuilder s = new StringBuilder();
         s.append("   ");
@@ -70,19 +71,10 @@ public class Board {
         }
         return s.toString();
     }
-
-    public void boardSize(int taille){
-        if(taille < 2 || taille > 25){
-            throw new IndexOutOfBoundsException("unacceptable size");
-        }
-        /*if(Arrays.asList(tableau).contains('.')){
-            System.out.println("Boardsize cannot be changed after record is started!");
-        }*/
-        else{
-            nbCase=taille;
-            initTab();
-        }
-
+    
+    public void setStone(int col,int row, byte player) {
+    	tableau[col][row] = player==0?'X':'O';
     }
+    
     
 }
