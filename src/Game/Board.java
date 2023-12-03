@@ -75,9 +75,8 @@ public class Board {
         return s.toString();
     }
     
-    public void setStone(Intersection inter, byte player) {
-    	tableau[inter.getX()][inter.getY()] = player==0?'X':'O';
+    public void setStone(Intersection inter, char player) {
+    	tableau[nbCase-inter.getY()][inter.getX()] = (player=='b'?'X':'O');
     }
-    
     
 }
