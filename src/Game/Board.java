@@ -2,11 +2,14 @@ package Game;
 
 //import java.util.Arrays;
 
+import java.util.HashMap;
+
 public class Board {
     private final int nbCase;
-    final static char[] alphabet = {'A','B','C','D','E','F','G','H','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+
     private char[][] tableau;
-    
+
+
     public Board(int nb){
     	
         nbCase=nb;

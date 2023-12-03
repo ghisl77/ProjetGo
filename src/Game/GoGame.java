@@ -37,5 +37,9 @@ public class GoGame {
         }
     	goban = new Board(taille);
     }
+
+    public void clearBoard(int taille){
+        boardSize(taille);
+    }
     
 }

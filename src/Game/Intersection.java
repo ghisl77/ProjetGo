@@ -1,9 +1,23 @@
 package Game;
 
+import java.util.HashMap;
+
 public class Intersection {
-	
+
+	private static HashMap<Character,Integer> ChartoRow;
+
 	private final int x;
+
 	private final int y;
+
+	static {
+		final char[] alphabet = {'A','B','C','D','E','F','G','H','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+
+		for (int i = 0; i < alphabet.length;i++) {
+			ChartoRow.put(alphabet[i],i);
+		}
+
+	}
 	
 	public Intersection(int x,int y) {
 		this.x = x;
@@ -13,27 +27,11 @@ public class Intersection {
 	public Intersection(String s) {
 		
 		String upper_string = s.toUpperCase();
-		
-		int temp_x = -1;
-		
-		final int l = upper_string.length();
-		int i;
-		for (i = 0 ; i < l ; i++) {
-			Character c = upper_string.charAt(i);
-			if (Character.isLetter(c)) {
-				temp_x = c - 'A';
-				break;
-			}	
-		}
-		
-		if (temp_x == -1)
-			throw new IllegalArgumentException();
-		else {
-			this.x = temp_x;
-		}
+
+		this.x = ChartoRow.get(upper_string.charAt(0));
 		
 		try {
-			this.y = Integer.parseInt(upper_string.substring(i));
+			this.y = Integer.parseInt(upper_string.substring(1));
 		} catch(Exception e) {
 			throw e;
 		}
@@ -44,6 +42,14 @@ public class Intersection {
 	public boolean validIntersectionString(String s) {
 		return true;
 		
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
 	}
 	
 }
