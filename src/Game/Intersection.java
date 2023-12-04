@@ -16,7 +16,6 @@ public class Intersection {
 		for (int i = 0; i < alphabet.length;i++) {
 			ChartoRow.put(alphabet[i],i);
 		}
-
 	}
 	
 	public Intersection(int x,int y) {
@@ -35,13 +34,6 @@ public class Intersection {
 		} catch(Exception e) {
 			throw e;
 		}
-		
-		
-	}
-	
-	public boolean validIntersectionString(String s) {
-		return true;
-		
 	}
 
 	public int getX() {
@@ -51,5 +43,5 @@ public class Intersection {
 	public int getY() {
 		return y;
 	}
-	
+
 }
