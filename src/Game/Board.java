@@ -5,9 +5,8 @@ package Game;
 import java.util.HashMap;
 
 public class Board {
+    private final char[] alphabet = {'A','B','C','D','E','F','G','H','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
     private final int nbCase;
-    final char[] alphabet = {'A','B','C','D','E','F','G','H','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
-
     private char[][] tableau;
 
 
@@ -76,9 +75,8 @@ public class Board {
         return s.toString();
     }
     
-    public void setStone(Intersection inter, char c) {
-    	tableau[inter.getX()][inter.getY()] = c=='w'?'X':'O';
+    public void setStone(Intersection inter, char player) {
+    	tableau[nbCase-inter.getY()][inter.getX()] = (player=='b'?'X':'O');
     }
-    
     
 }
