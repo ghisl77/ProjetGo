@@ -12,7 +12,9 @@ public class Intersection {
 
 	static {
 		final char[] alphabet = {'A','B','C','D','E','F','G','H','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
-
+		
+		ChartoRow = new HashMap<Character,Integer>();
+		
 		for (int i = 0; i < alphabet.length;i++) {
 			ChartoRow.put(alphabet[i],i);
 		}
