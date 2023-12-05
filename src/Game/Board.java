@@ -12,7 +12,7 @@ public class Board {
 
 
     public Board(int nb){
-    	
+
         nbCase=nb;
         tableau = new char[nbCase][nbCase];
         for (int i = 0; i < nbCase; i++) {
@@ -20,11 +20,11 @@ public class Board {
                 tableau[i][j] = '.';
             }
         }
-        
+
         handicap();
-        
+
     }
-    
+
     private void handicap(){
         if(nbCase>6){
             int ecart;
@@ -47,7 +47,7 @@ public class Board {
             }
         }
     }
-    
+
     public String showboard(){
         StringBuilder s = new StringBuilder();
         s.append("   ");
@@ -75,13 +75,35 @@ public class Board {
         }
         return s.toString();
     }
-    
+
     public void setStone(Intersection inter, char player) {
-    	tableau[nbCase-inter.getY()][inter.getX()] = (player=='b'?'X':'O');
+        tableau[nbCase-inter.getY()][inter.getX()] = (player=='b'?'X':'O');
+        encercle();
     }
 
     public int getNbCase() {
         return nbCase;
     }
-    
+    public void encercle() {
+        for (int i = 1; i < nbCase - 1; i++) {
+            for (int j = 1; j < nbCase - 1; j++) {
+                if (tableau[i][j] == 'X') {
+                    boolean surrounded = false;
+
+                    // Vérifie si 'X' est entouré de 'O's de tous les côtés
+                    if (tableau[i - 1][j] == 'O' && tableau[i + 1][j] == 'O' &&
+                            tableau[i][j - 1] == 'O' && tableau[i][j + 1] == 'O') {
+                        surrounded = true;
+                    }
+
+                    if (surrounded) {
+                        tableau[i][j] = '.';
+                    }
+                }
+            }
+        }
+    }
+
+
+
 }
