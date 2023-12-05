@@ -6,10 +6,10 @@ import java.util.Arrays;
 import Game.*;
 
 public class Main {
-    public static void main(String[] args) {
-    
-    	
-    	final ArrayList<String> list_commands = 
+
+		public static void main(String[] args) {
+
+			final ArrayList<String> list_commands =
     			new ArrayList<String>(Arrays.asList("protocol_version","version",
     					"known_command","list_commands","quit","boardsize","clear_board",
     					"komi","play","genmove"));
@@ -76,11 +76,10 @@ public class Main {
     			} catch(Exception e) {
     				successful_response = false;
     				error_message = "unacceptable size";
-    				continue;
     			}
     			
     		}else if (command.equals("clear_board")) {
-    			// TODO
+				partie.clearBoard();
     		}else if (command.equals("komi")) {
     			// TODO
     		}else if (command.equals("play")) {

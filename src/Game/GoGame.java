@@ -37,7 +37,7 @@ public class GoGame {
     
     public void boardSize(int taille) {
     	if(taille < 2 || taille > 25){
-            throw new IllegalArgumentException("unacceptable size");
+            throw new IllegalArgumentException();
         }
     	goban = new Board(taille);
     }
@@ -48,6 +48,10 @@ public class GoGame {
     
     public IPlayer currentPlayer() {
     	return GetPlayer(current_player_char);
+    }
+
+    public void clearBoard(){
+        boardSize(goban.getNbCase());
     }
     
     public void switchCurrentPlayer() {
