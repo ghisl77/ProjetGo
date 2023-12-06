@@ -58,5 +58,4 @@ public class GoGame {
     	current_player_char = current_player_char=='w'?'b':'w';
     	current_player = GetPlayer(current_player_char);
     }
-    
 }

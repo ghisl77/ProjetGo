@@ -78,32 +78,31 @@ public class Board {
 
     public void setStone(Intersection inter, char player) {
         tableau[nbCase-inter.getY()][inter.getX()] = (player=='b'?'X':'O');
-        encercle();
+       if(!estLibre(inter)){
+            tableau[nbCase-inter.getY()][inter.getX()]='.';
+        }
+        inter = new Intersection(inter.getY()- 1,inter.getX());
+        if(!estLibre(inter)){
+            tableau[nbCase-inter.getY()][inter.getX()]='.';
+        }
+        inter = new Intersection(inter.getY() + 1,inter.getX());
+        if(!estLibre(inter)){
+            tableau[nbCase-inter.getY()][inter.getX()]='.';
+        }
+        inter = new Intersection(inter.getY(),inter.getX() - 1);
+        if(!estLibre(inter)){
+            tableau[nbCase-inter.getY()][inter.getX()]='.';
+        }
+        inter = new Intersection(inter.getY(),inter.getX() + 1);
+        if(!estLibre(inter)){
+            tableau[nbCase-inter.getY()][inter.getX()]='.';
+        }
     }
 
     public int getNbCase() {
         return nbCase;
     }
-    public void encercle() {
-        for (int i = 1; i < nbCase - 1; i++) {
-            for (int j = 1; j < nbCase - 1; j++) {
-                if (tableau[i][j] == 'X') {
-                    boolean surrounded = false;
-
-                    // Vérifie si 'X' est entouré de 'O's de tous les côtés
-                    if (tableau[i - 1][j] == 'O' && tableau[i + 1][j] == 'O' &&
-                            tableau[i][j - 1] == 'O' && tableau[i][j + 1] == 'O') {
-                        surrounded = true;
-                    }
-
-                    if (surrounded) {
-                        tableau[i][j] = '.';
-                    }
-                }
-            }
-        }
-    }
-    public boolean estlibre(Intersection inter){
+    public boolean estLibre(Intersection inter){
         char opps = '0';
         if (tableau[nbCase-inter.getY()][inter.getX()] == '0'){
              opps = 'X';
