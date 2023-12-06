@@ -103,7 +103,15 @@ public class Board {
             }
         }
     }
-
-
-
+    public boolean estlibre(Intersection inter){
+        char opps = '0';
+        if (tableau[nbCase-inter.getY()][inter.getX()] == '0'){
+             opps = 'X';
+        }
+        if(tableau[nbCase-inter.getY()- 1][inter.getX()] == opps && tableau[nbCase-inter.getY() + 1][inter.getX()] == opps &&
+        tableau[nbCase-inter.getY()][inter.getX() - 1] == opps && tableau[nbCase-inter.getY()][inter.getX() + 1] == opps){
+            return false;
+        }
+        return true;
+    }
 }
