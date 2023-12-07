@@ -81,21 +81,21 @@ public class Board {
        if(!estLibre(inter)){
             tableau[nbCase-inter.getY()][inter.getX()]='.';
         }
-        inter = new Intersection(inter.getX()- 1,inter.getY());
-        if(!estLibre(inter)){
-            tableau[nbCase-inter.getY()][inter.getX()]='.';
+         Intersection NVXinter = new Intersection(inter.getX()- 1,inter.getY());
+        if(!estLibre(NVXinter)){
+            tableau[nbCase-NVXinter.getY()][NVXinter.getX()]='.';
         }
-        inter = new Intersection(inter.getX() + 1,inter.getY());
-        if(!estLibre(inter)){
-            tableau[nbCase-inter.getY()][inter.getX()]='.';
+        NVXinter = new Intersection(inter.getX() + 1,inter.getY());
+        if(!estLibre(NVXinter)){
+            tableau[nbCase-NVXinter.getY()][NVXinter.getX()]='.';
         }
-        inter = new Intersection(inter.getX(),inter.getY() - 1);
-        if(!estLibre(inter)){
-            tableau[nbCase-inter.getY()][inter.getX()]='.';
+        NVXinter = new Intersection(inter.getX(),inter.getY() - 1);
+        if(!estLibre(NVXinter)){
+            tableau[nbCase-NVXinter.getY()][NVXinter.getX()]='.';
         }
-        inter = new Intersection(inter.getX(),inter.getY() + 1);
-        if(!estLibre(inter)){
-            tableau[nbCase-inter.getY()][inter.getX()]='.';
+        NVXinter = new Intersection(inter.getX(),inter.getY() + 1);
+        if(!estLibre(NVXinter)){
+            tableau[nbCase-NVXinter.getY()][NVXinter.getX()]='.';
         }
     }
 
