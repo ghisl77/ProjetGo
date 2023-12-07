@@ -81,7 +81,7 @@ public class Board {
        if(!estLibre(inter)){
             tableau[nbCase-inter.getY()][inter.getX()]='.';
         }
-         Intersection NVXinter = new Intersection(inter.getX()- 1,inter.getY());
+       Intersection NVXinter = new Intersection(inter.getX()- 1,inter.getY());
         if(!estLibre(NVXinter)){
             tableau[nbCase-NVXinter.getY()][NVXinter.getX()]='.';
         }
