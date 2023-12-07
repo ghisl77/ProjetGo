@@ -77,23 +77,23 @@ public class Board {
     }
 
     public void setStone(Intersection inter, char player) {
-        tableau[nbCase-inter.getY()][inter.getX()] = (player=='b'?'X':'O');
+        tableau[nbCase-inter.getY()][inter.getX()] = (player=='b'?'X':'0');
        if(!estLibre(inter)){
             tableau[nbCase-inter.getY()][inter.getX()]='.';
         }
-        inter = new Intersection(inter.getY()- 1,inter.getX());
+        inter = new Intersection(inter.getX()- 1,inter.getY());
         if(!estLibre(inter)){
             tableau[nbCase-inter.getY()][inter.getX()]='.';
         }
-        inter = new Intersection(inter.getY() + 1,inter.getX());
+        inter = new Intersection(inter.getX() + 1,inter.getY());
         if(!estLibre(inter)){
             tableau[nbCase-inter.getY()][inter.getX()]='.';
         }
-        inter = new Intersection(inter.getY(),inter.getX() - 1);
+        inter = new Intersection(inter.getX(),inter.getY() - 1);
         if(!estLibre(inter)){
             tableau[nbCase-inter.getY()][inter.getX()]='.';
         }
-        inter = new Intersection(inter.getY(),inter.getX() + 1);
+        inter = new Intersection(inter.getX(),inter.getY() + 1);
         if(!estLibre(inter)){
             tableau[nbCase-inter.getY()][inter.getX()]='.';
         }
