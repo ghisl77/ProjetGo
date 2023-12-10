@@ -3,114 +3,187 @@ package Game;
 //import java.util.Arrays;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Board {
     private final char[] alphabet = {'A','B','C','D','E','F','G','H','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
-
-    private final int nbCase;
+    private final int nbCases;
     private char[][] tableau;
 
 
     public Board(int nb){
-
-        nbCase=nb;
-        tableau = new char[nbCase][nbCase];
-        for (int i = 0; i < nbCase; i++) {
-            for (int j = 0; j < nbCase; j++) {
-                tableau[i][j] = '.';
+    	
+        nbCases=nb;
+        tableau = new char[nbCases][nbCases];
+        for (int row = 0; row < nbCases; row++) {
+            for (int col = 0; col < nbCases; col++) {
+            	setChar(col, row,'.');
             }
         }
-
+        
         handicap();
-
+        
+        
+        setChar(15,3,'O');
+        setChar(16,3,'O');
+        setChar(17,3,'O');
+        setChar(15,4,'O');
+        setChar(16,4,'O');
+        setChar(17,4,'O');
+        setChar(18,4,'O');
+        setChar(18,5,'O');
+        
+        setChar(18,3,'.');
+        setChar(17,2,'X');
+        setChar(16,2,'X');
+        setChar(15,2,'X');
+        setChar(14,3,'X');
+        setChar(14,4,'X');
+        setChar(15,5,'X');
+        setChar(16,5,'X');
+        setChar(17,5,'X');
+        setChar(18,6,'X');
+        
     }
-
+    
+    private void setChar(int col, int row, char value) {
+    	tableau[row][col] = value;
+    }
+    
+    private void setChar(Intersection inter,char value) {
+    	setChar(inter.getCol(),inter.getRow(),value);
+    	
+    }
+    
+    private char getChar(int col, int row) {
+    	
+    	if (col < 0 || col >= nbCases || row < 0 || row >= nbCases) {
+    		return 'W';
+    	}
+    	
+    	return tableau[row][col];
+    }
+    
+    private char getChar(Intersection inter) {
+    	return getChar(inter.getCol(),inter.getRow());
+    }
+    
+    private int getLiberties(Intersection i) {
+    	
+    	int liberties = 0;
+    	
+    	for (int x = 1 ; x<9 ; x+=2) {
+    		if (getChar(i.getCol()-1+x%3,i.getRow()-1+x/3) == '.');
+    			liberties++;
+    	}
+    	
+    	return liberties;
+    }
+    
     private void handicap(){
-        if(nbCase>6){
+        if(nbCases>6){
             int ecart;
-            if(nbCase>13){
+            if(nbCases>13){
                 ecart = 3;
             }
             else{
                 ecart = 2;
             }
             tableau[ecart][ecart]='+';
-            tableau[nbCase-ecart-1][nbCase-ecart-1]='+';
-            tableau[nbCase-ecart-1][ecart]='+';
-            tableau[ecart][nbCase-ecart-1]='+';
-            if(nbCase%2!=0 && nbCase!=7){
-                tableau[nbCase/2][nbCase/2]='+';
-                tableau[nbCase/2][ecart]='+';
-                tableau[nbCase/2][nbCase-ecart-1]='+';
-                tableau[nbCase-ecart-1][nbCase/2]='+';
-                tableau[ecart][nbCase/2]='+';
+            tableau[nbCases-ecart-1][nbCases-ecart-1]='+';
+            tableau[nbCases-ecart-1][ecart]='+';
+            tableau[ecart][nbCases-ecart-1]='+';
+            if(nbCases%2!=0 && nbCases!=7){
+                tableau[nbCases/2][nbCases/2]='+';
+                tableau[nbCases/2][ecart]='+';
+                tableau[nbCases/2][nbCases-ecart-1]='+';
+                tableau[nbCases-ecart-1][nbCases/2]='+';
+                tableau[ecart][nbCases/2]='+';
             }
         }
     }
-
+    
     public String showboard(){
+    	
         StringBuilder s = new StringBuilder();
         s.append("   ");
-        for (int i = 0; i < nbCase; i++) {
-            s.append(alphabet[i]+ " ");
+        
+        for (int col = 0; col < nbCases; col++) {
+            s.append(alphabet[col]+ " ");
         }
         s.append("\n");
-        for (int i = 0; i < nbCase; i++) {
-            if(i>nbCase-10){
+        
+        for (int row = nbCases-1; row >= 0; row--) {
+            if(row<nbCases-10){
                 s.append(" ");
             }
-            s.append(nbCase-i + " ");
-            for (int j = 0; j < nbCase; j++) {
-                s.append(tableau[i][j]+" ");
+            s.append((row+1) + " ");
+            for (int col = 0; col < nbCases; col++) {
+                s.append(getChar(col,row)+" ");
             }
-            if(i>nbCase-10){
+            if(row<nbCases-10){
                 s.append(" ");
             }
-            s.append(nbCase-i + " ");
+            s.append((row+1) + " ");
             s.append("\n");
         }
         s.append("   ");
-        for (int i = 0; i < nbCase; i++) {
-            s.append(alphabet[i]+ " ");
+        
+        for (int col = 0; col < nbCases; col++) {
+            s.append(alphabet[col]+ " ");
         }
         return s.toString();
     }
+    
+    public void setStone(Intersection inter, char player) throws Exception {
+    	
+    	if (getChar(inter) != '.') {
+    		throw new Exception();
+    	}
+    	setChar(inter, player);
+    }
+    
+    public int checkForCapturedStones(Intersection inter,char player) {
+    	
+    	for (int x = 1 ; x<9 ; x+=2) {
 
-    public void setStone(Intersection inter, char player) {
-        tableau[nbCase-inter.getY()][inter.getX()] = (player=='b'?'X':'0');
-       if(!estLibre(inter)){
-            tableau[nbCase-inter.getY()][inter.getX()]='.';
-        }
-       Intersection NVXinter = new Intersection(inter.getX()- 1,inter.getY());
-        if(!estLibre(NVXinter)){
-            tableau[nbCase-NVXinter.getY()][NVXinter.getX()]='.';
-        }
-        NVXinter = new Intersection(inter.getX() + 1,inter.getY());
-        if(!estLibre(NVXinter)){
-            tableau[nbCase-NVXinter.getY()][NVXinter.getX()]='.';
-        }
-        NVXinter = new Intersection(inter.getX(),inter.getY() - 1);
-        if(!estLibre(NVXinter)){
-            tableau[nbCase-NVXinter.getY()][NVXinter.getX()]='.';
-        }
-        NVXinter = new Intersection(inter.getX(),inter.getY() + 1);
-        if(!estLibre(NVXinter)){
-            tableau[nbCase-NVXinter.getY()][NVXinter.getX()]='.';
-        }
+        	HashSet<Intersection> connected = new HashSet<Intersection>();
+    		Intersection next_to_inter = new Intersection(inter.getCol()-1+x%3,inter.getRow()-1+x/3);
+    		
+    		connectedStones(next_to_inter, connected, (player=='X'?'O':'X'));
+    		
+    		boolean captured = true;
+    		
+    		for (Intersection i:connected) {
+    			if (getLiberties(i) != 0) {
+    				captured = false;
+    				break;
+    			}
+    		}
+    		
+    		for (Intersection i:connected) {
+    			setChar(i,'.');
+    		}
+    		
+    	}
+    	
+    	//HashMap<Intersection, Boolean> checked = new HashMap<Intersection,Boolean>();
+    
+    	return 0;
     }
-
-    public int getNbCase() {
-        return nbCase;
+    
+    private void connectedStones(Intersection inter, HashSet<Intersection> checked, char ally_sign) {
+    	
+    	if (!checked.contains(inter) && getChar(inter) == ally_sign) {
+    		checked.add(inter);
+    		for (int x = 1 ; x<9 ; x+=2) {
+        		Intersection next_to_inter = new Intersection(inter.getCol()-1+x%3,inter.getRow()-1+x/3);
+        		
+        		connectedStones(next_to_inter, checked, ally_sign);
+        	}
+    	}
+    	
     }
-    public boolean estLibre(Intersection inter){
-        char opps = '0';
-        if (tableau[nbCase-inter.getY()][inter.getX()] == '0'){
-             opps = 'X';
-        }
-        if(tableau[nbCase-inter.getY()- 1][inter.getX()] == opps && tableau[nbCase-inter.getY() + 1][inter.getX()] == opps &&
-        tableau[nbCase-inter.getY()][inter.getX() - 1] == opps && tableau[nbCase-inter.getY()][inter.getX() + 1] == opps){
-            return false;
-        }
-        return true;
-    }
+    
+    
 }
