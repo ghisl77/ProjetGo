@@ -1,6 +1,7 @@
 package Game;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Intersection {
 
@@ -18,6 +19,7 @@ public class Intersection {
 		for (int i = 0; i < alphabet.length;i++) {
 			ChartoRow.put(alphabet[i],i);
 		}
+		
 	}
 	
 	public Intersection(int x,int y) {
@@ -28,22 +30,42 @@ public class Intersection {
 	public Intersection(String s) {
 		
 		String upper_string = s.toUpperCase();
-
-		this.x = ChartoRow.get(upper_string.charAt(0));
 		
 		try {
-			this.y = Integer.parseInt(upper_string.substring(1));
+			
+			this.x = ChartoRow.get(upper_string.charAt(0));
+			this.y = Integer.parseInt(upper_string.substring(1))-1;
+			
 		} catch(Exception e) {
-			throw e;
+			throw new IllegalArgumentException();
 		}
 	}
 
-	public int getX() {
+	public int getCol() {
 		return x;
 	}
 
-	public int getY() {
+	public int getRow() {
 		return y;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(x, y);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Intersection other = (Intersection) obj;
+		return x == other.x && y == other.y;
+	}
+	
+	
 
 }
