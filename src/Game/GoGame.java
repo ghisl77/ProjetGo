@@ -30,8 +30,14 @@ public class GoGame {
     	return goban.showboard();
     }
     
-    public void play(Intersection inter) {
-    	goban.setStone(inter,current_player_char);
+    public void play(Intersection inter,char color) throws Exception {
+    	
+    	char player_sign = (color=='b'?'X':'O');
+    	
+    	goban.setStone(inter,player_sign);
+    	
+    	goban.checkForCapturedStones(inter,player_sign);
+    	
     	switchCurrentPlayer();
     }
     
@@ -49,13 +55,14 @@ public class GoGame {
     public IPlayer currentPlayer() {
     	return GetPlayer(current_player_char);
     }
-
-    public void clearBoard(){
-        boardSize(goban.getNbCase());
+    
+    public char getColorPlaying() {
+    	return current_player_char;
     }
     
     public void switchCurrentPlayer() {
     	current_player_char = current_player_char=='w'?'b':'w';
     	current_player = GetPlayer(current_player_char);
     }
+    
 }
