@@ -2,14 +2,14 @@ package Appli;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 import Game.*;
 
 public class Main {
-
-		public static void main(String[] args) {
-
-			final ArrayList<String> list_commands =
+    public static void main(String[] args) {
+    	
+    	final ArrayList<String> list_commands = 
     			new ArrayList<String>(Arrays.asList("protocol_version","version",
     					"known_command","list_commands","quit","boardsize","clear_board",
     					"komi","play","genmove"));
@@ -79,21 +79,34 @@ public class Main {
     			}
     			
     		}else if (command.equals("clear_board")) {
-				partie.clearBoard();
+    			// TODO
     		}else if (command.equals("komi")) {
     			// TODO
     		}else if (command.equals("play")) {
     			
-    			try {
-        			Intersection inter = new Intersection(arguments.get(1));
-    				partie.play(inter);
-    			} catch(Exception e) {
+    			char char_color = 'n';
+    			String color = arguments.get(1).toUpperCase();
+    			
+    			if (color.equals("BLACK")) {char_color = 'b';}
+    			else if (color.equals("WHITE")) {char_color = 'w';}
+    			
+    			if (char_color!= 'n') {
+	    			try {
+	        			Intersection inter = new Intersection(arguments.get(2));
+	    				partie.play(inter,char_color);
+	    			} catch(Exception e) {
+	
+	    				successful_response = false;
+	    				error_message = "illegal move";		
+	    			}
+    			}
+    			else {
 
     				successful_response = false;
-    				error_message = "illegal move";
+    				error_message = "illegal move";		
     				
     			}
-    			// TODO
+    			
     		}else if (command.equals("genmove")) {
     			// TODO
     		}
@@ -116,8 +129,9 @@ public class Main {
     		System.out.print( 
     				(successful_response?"=":"?") + 
     				(has_id?command_id:"") + 
-    				(successful_response ? (new String(response)) :error_message) );
-    		System.out.print( new String(response) + "\n\n");
+    				(successful_response ? response.toString() :error_message) );
+    		
+    		System.out.print("\n\n");
     		
     	} while(game_is_running);
     	
@@ -135,4 +149,5 @@ public class Main {
     	}
     	return true;
     }
+    
 }
