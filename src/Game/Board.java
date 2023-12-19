@@ -10,6 +10,14 @@ public class Board {
     private final int nbCases;
     private char[][] tableau;
 
+    public Board(String str, int nb){
+        this(nb);
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if(c == 'X' || c == 'O')
+        	this.setChar(i%(nb+1),nb-i/(nb+1),c);
+        }
+    }
 
     public Board(int nb){
     	
@@ -22,27 +30,6 @@ public class Board {
         }
         
         handicap();
-        
-        
-        setChar(15,3,'O');
-        setChar(16,3,'O');
-        setChar(17,3,'O');
-        setChar(15,4,'O');
-        setChar(16,4,'O');
-        setChar(17,4,'O');
-        setChar(18,4,'O');
-        setChar(18,5,'O');
-        
-        setChar(18,3,'.');
-        setChar(17,2,'X');
-        setChar(16,2,'X');
-        setChar(15,2,'X');
-        setChar(14,3,'X');
-        setChar(14,4,'X');
-        setChar(15,5,'X');
-        setChar(16,5,'X');
-        setChar(17,5,'X');
-        setChar(18,6,'X');
         
     }
     
@@ -204,6 +191,9 @@ public class Board {
         		
         		connectedStones(next_to_inter, checked, ally_sign);
         	}
-    	}	
+    	}
+    	
     }
+    
+    
 }
