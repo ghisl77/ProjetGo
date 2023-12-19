@@ -12,7 +12,24 @@ public class GoGame {
     private int[] points;
     public GoGame(int nbCase){
     	
-        goban = new Board(nbCase);
+        goban = new Board("...................\n" +
+                "...................\n" +
+                "...................\n" +
+                "...................\n" +
+                "...................\n" +
+                "...................\n" +
+                "...................\n" +
+                "...................\n" +
+                "...................\n" +
+                "...................\n" +
+                "..................X\n" +
+                "...............XXXO\n" +
+                "..............XOOOO\n" +
+                ".............XOOOOO\n" +
+                "..............XXXX.\n" +
+                "...................\n" +
+                "...................\n" +
+                "...................", nbCase);
         joueurs = new IPlayer[2];
         joueurs[0] = new ConsolePlayer();
         joueurs[1] = new ConsolePlayer();
@@ -27,16 +44,18 @@ public class GoGame {
     }
     
     public String showboard() {
-    	return goban.showboard();
+    	StringBuilder s = new StringBuilder(goban.showboard());
+    	s.append("\nblack: ");
+    	s.append(points[0]);
+    	s.append("\nwhite: ");
+    	s.append(points[1]);
+    	return s.toString();
     }
     
     public void play(Intersection inter,char color) throws Exception {
     	
-    	char player_sign = (color=='b'?'X':'O');
-    	
-    	goban.setStone(inter,player_sign);
-    	
-    	goban.checkForCapturedStones(inter,player_sign);
+    	goban.setStone(inter,(color=='b'?'X':'O'));
+    	goban.checkForCapturedStones(inter,color,points);
     	
     	switchCurrentPlayer();
     }
@@ -58,6 +77,10 @@ public class GoGame {
     
     public char getColorPlaying() {
     	return current_player_char;
+    }
+    
+    public int getScore(char player) {
+    	return points[player=='b'?0:1];
     }
     
     public void switchCurrentPlayer() {
