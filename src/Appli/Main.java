@@ -2,7 +2,6 @@ package Appli;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 
 import Game.*;
 
@@ -125,7 +124,8 @@ public class Main {
     		 * */
     	
     		System.out.println(partie.showboard());
-
+    		
+    		
     		System.out.print( 
     				(successful_response?"=":"?") + 
     				(has_id?command_id:"") + 
