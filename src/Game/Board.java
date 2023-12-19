@@ -73,7 +73,8 @@ public class Board {
     	int liberties = 0;
     	
     	for (int x = 1 ; x<9 ; x+=2) {
-    		if (getChar(i.getCol()-1+x%3,i.getRow()-1+x/3) == '.');
+    		char c = getChar(i.getCol()-1+x%3,i.getRow()-1+x/3);
+    		if (c == '.'|| c =='+')
     			liberties++;
     	}
     	
@@ -143,33 +144,55 @@ public class Board {
     	setChar(inter, player);
     }
     
-    public int checkForCapturedStones(Intersection inter,char player) {
+    public void checkForCapturedStones(Intersection inter,char player_color,int[] points) {
+
+    	char player_sign = (player_color=='b'?'X':'O');
+    	char enemy_sign = (player_color=='b'?'O':'X');
+    	
+    	int playing = player_color=='b'?0:1;
+    	int ennemy =  player_color=='b'?1:0;
+    	
+    	HashSet<Intersection> connected = new HashSet<Intersection>();
     	
     	for (int x = 1 ; x<9 ; x+=2) {
 
-        	HashSet<Intersection> connected = new HashSet<Intersection>();
+        	connected = new HashSet<Intersection>();
     		Intersection next_to_inter = new Intersection(inter.getCol()-1+x%3,inter.getRow()-1+x/3);
     		
-    		connectedStones(next_to_inter, connected, (player=='X'?'O':'X'));
+    		connectedStones(next_to_inter, connected, enemy_sign);
     		
-    		boolean captured = true;
-    		
-    		for (Intersection i:connected) {
-    			if (getLiberties(i) != 0) {
-    				captured = false;
-    				break;
-    			}
-    		}
-    		
-    		for (Intersection i:connected) {
-    			setChar(i,'.');
-    		}
+    		points[playing] += capture(connected);
     		
     	}
     	
+    	connected = new HashSet<Intersection>();
+		connectedStones(inter, connected, player_sign);
+		
+		points[ennemy] += capture(connected);
+    	
     	//HashMap<Intersection, Boolean> checked = new HashMap<Intersection,Boolean>();
+    }
     
-    	return 0;
+    private int capture(HashSet<Intersection> connected) {
+    	
+    	boolean captured = true;
+		
+		for (Intersection i:connected) {
+			if (getLiberties(i) != 0) {
+				captured = false;
+				break;
+			}
+		}
+		
+		if (captured) {
+    		for (Intersection i:connected) {
+    			setChar(i,'.');
+    		}
+    		return connected.size();
+		}
+    	
+		return 0;
+    	
     }
     
     private void connectedStones(Intersection inter, HashSet<Intersection> checked, char ally_sign) {
@@ -181,9 +204,6 @@ public class Board {
         		
         		connectedStones(next_to_inter, checked, ally_sign);
         	}
-    	}
-    	
+    	}	
     }
-    
-    
 }
