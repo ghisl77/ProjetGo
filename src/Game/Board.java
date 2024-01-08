@@ -1,9 +1,12 @@
 package Game;
 
+import java.util.ArrayList;
+
 //import java.util.Arrays;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class Board {
     private final char[] alphabet = {'A','B','C','D','E','F','G','H','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
@@ -12,10 +15,15 @@ public class Board {
 
     public Board(String str, int nb){
         this(nb);
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if(c == 'X' || c == 'O')
-        	this.setChar(i%(nb+1),nb-i/(nb+1),c);
+        String[] rows = str.split("\n");
+        for (int rowi = 0; rowi < rows.length; rowi++) {
+        	String row = rows[rowi];
+        	for (int coli = 0;coli < nb;coli++) {
+        		char c = row.charAt(coli);
+        		if (c == 'X' || c == 'O') {
+        			setChar(coli,nb-rowi-1,c);
+        		}
+        	}
         }
     }
 
@@ -49,23 +57,59 @@ public class Board {
     	}
     	
     	return tableau[row][col];
-    }
+    } 
     
     private char getChar(Intersection inter) {
     	return getChar(inter.getCol(),inter.getRow());
     }
+    
+    public int getSize() {
+    	return nbCases;
+    }
+   
     
     private int getLiberties(Intersection i) {
     	
     	int liberties = 0;
     	
     	for (int x = 1 ; x<9 ; x+=2) {
-    		char c = getChar(i.getCol()-1+x%3,i.getRow()-1+x/3);
-    		if (c == '.'|| c =='+')
+    		Intersection ic = new Intersection(i.getCol()-1+x%3,i.getRow()-1+x/3);
+    		if (isEmpty(ic))
     			liberties++;
     	}
     	
     	return liberties;
+    }
+    
+    public boolean isEmpty(Intersection i) {
+    	char c = getChar(i);
+		return c == '.'|| c =='+';
+    }
+    
+    public boolean isPlayable(Intersection i) {
+    	
+    	if (!isEmpty(i)) {return false;}
+    	
+    	if (getLiberties(i) == 0) {return false;}
+  
+    	return true;
+    }
+    
+    public ArrayList<Intersection> getPlayableIntersections() {
+    	
+    	ArrayList<Intersection> result = new ArrayList<Intersection>();
+    	
+    	for (int row = 0; row < nbCases; row++) {
+            for (int col = 0; col < nbCases; col++) {
+            	Intersection i = new Intersection(col,row);
+            	if (isPlayable(i)) {
+            		result.add(i);
+            	}
+            }
+        }
+    	
+    	return result;
+    	
     }
     
     private void handicap(){
@@ -91,7 +135,7 @@ public class Board {
         }
     }
     
-    public String showboard(){
+    public String toString(){
     	
         StringBuilder s = new StringBuilder();
         s.append("   ");
@@ -123,9 +167,15 @@ public class Board {
         return s.toString();
     }
     
+    public String[] SeparatedRows() {
+    	
+    	return toString().split("\n");
+    	
+    }
+    
     public void setStone(Intersection inter, char player) throws Exception {
     	
-    	if (getChar(inter) != '.') {
+    	if (getChar(inter) != '.' && getChar(inter) != '+') {
     		throw new Exception();
     	}
     	setChar(inter, player);
@@ -160,18 +210,21 @@ public class Board {
     	//HashMap<Intersection, Boolean> checked = new HashMap<Intersection,Boolean>();
     }
     
-    private int capture(HashSet<Intersection> connected) {
-    	
-    	boolean captured = true;
+    private boolean hasNoLiberty(HashSet<Intersection> connected) {
 		
 		for (Intersection i:connected) {
 			if (getLiberties(i) != 0) {
-				captured = false;
-				break;
+				return false;
 			}
 		}
 		
-		if (captured) {
+		return true;
+    	
+    }
+    
+    private int capture(HashSet<Intersection> connected) {
+    			
+		if (hasNoLiberty(connected)) {
     		for (Intersection i:connected) {
     			setChar(i,'.');
     		}
