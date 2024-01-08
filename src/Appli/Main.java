@@ -2,11 +2,14 @@ package Appli;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import Game.*;
 
 public class Main {
     public static void main(String[] args) {
+    	
+    	Scanner input = new Scanner(System.in);
     	
     	final ArrayList<String> list_commands = 
     			new ArrayList<String>(Arrays.asList("protocol_version","version",
@@ -15,11 +18,13 @@ public class Main {
     	
     	boolean game_is_running = true;
     	
-    	GoGame partie = new GoGame(19);
+    	String[] config = {args[0],args[1]};
+    	
+    	GoGame partie = new GoGame(config,19);
     	
 		ArrayList<String> arguments;
 		String command;
-
+		
 		System.out.println(partie.showboard());
 		
     	do {
@@ -83,28 +88,35 @@ public class Main {
     			// TODO
     		}else if (command.equals("play")) {
     			
-    			char char_color = 'n';
-    			String color = arguments.get(1).toUpperCase();
-    			
-    			if (color.equals("BLACK")) {char_color = 'b';}
-    			else if (color.equals("WHITE")) {char_color = 'w';}
-    			
-    			if (char_color!= 'n') {
-	    			try {
-	        			Intersection inter = new Intersection(arguments.get(2));
-	    				partie.play(inter,char_color);
-	    			} catch(Exception e) {
-	
-	    				successful_response = false;
-	    				error_message = "illegal move";		
-	    			}
-    			}
-    			else {
+    			if (arguments.size() == 1) {
+    				partie.switchCurrentPlayer();
+    			} else {
+    				char char_color = 'n';
+        			String color = arguments.get(1).toUpperCase();
+        			
+        			
+        			if (color.equals("BLACK")) {char_color = 'b';}
+        			else if (color.equals("WHITE")) {char_color = 'w';}
+        			
+        			if (char_color != 'n') {
+    	    			try {
+    	        			Intersection inter = new Intersection(arguments.get(2));
+    	    				partie.play(inter,char_color);
+    	    			} catch(Exception e) {
+    	
+    	    				successful_response = false;
+    	    				error_message = "illegal move";		
+    	    			}
+        			}
+        			else {
 
-    				successful_response = false;
-    				error_message = "illegal move";		
-    				
+        				successful_response = false;
+        				error_message = "illegal move";
+        
+        			}
     			}
+    			
+    			
     			
     		}else if (command.equals("genmove")) {
     			// TODO
@@ -132,6 +144,24 @@ public class Main {
     				(successful_response ? response.toString() :error_message) );
     		
     		System.out.print("\n\n");
+    		
+    		if (partie.estTerminee()) {
+    			int white_score = partie.getScore('w');
+    			int black_score = partie.getScore('b');
+    			System.out.println("WHITE (O) has captured " + white_score + " stones");
+    			System.out.println("BLACK (X) has captured " + black_score + " stones");
+    					
+    			if (white_score == black_score) {
+    				System.out.println("There is a tie.");
+    			} else if (white_score < black_score) {
+    				System.out.println("BLACK (X) won.");
+    				
+    			} else {
+    				System.out.println("WHITE (O) won.");
+    				
+    			}
+    			return;
+    		}
     		
     	} while(game_is_running);
     	
