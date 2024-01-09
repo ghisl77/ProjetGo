@@ -10,9 +10,10 @@ public class Intersection {
 	private final int x;
 
 	private final int y;
+	
+	private static final char[] alphabet = {'A','B','C','D','E','F','G','H','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
 	static {
-		final char[] alphabet = {'A','B','C','D','E','F','G','H','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 		
 		ChartoRow = new HashMap<Character,Integer>();
 		
@@ -49,6 +50,16 @@ public class Intersection {
 		return y;
 	}
 
+	public String toString() {
+		String result = "";
+		
+		result += alphabet[x];
+		result += (y+1);
+		
+		return result;
+		
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(x, y);
