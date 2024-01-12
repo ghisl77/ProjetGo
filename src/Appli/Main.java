@@ -59,7 +59,7 @@ public class Main {
     			
     		}else if (command.equals("known_command")) {
     			if(list_commands.contains(arguments.get(1))) {
-    				response.append("");
+    				response.append("true");
     			} else {
     				response.append("false");
     			}
